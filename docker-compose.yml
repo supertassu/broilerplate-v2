@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  db:
+    environment:
+      POSTGRES_DB: broil
+      POSTGRES_PASSWORD: broil
+      POSTGRES_USER: broil
+    image: postgres:11-alpine
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  backend:
+    build: backend
+    command: ./wait-for db:5432 -- yarn dev
+    tty: true
+    environment:
+      DATABASE_URL: postgres://broil:broil@db/broil
+      ENDPOINT: ${ENDPOINT}
+    volumes:
+      - ./backend/src:/usr/src/app/src
+      - ./backend/test:/usr/src/app/test
+    ports:
+      - 9000:9000
+      - 5858:5858
+    depends_on:
+      - db
+
+  # dev:
+  #   build: frontend
+  #   environment:
+  #     ENDPOINT: ${ENDPOINT}
+  #   volumes:
+  #     - ./frontend/src:/usr/src/app/src
+  #   ports:
+  #     - 8000:8000
+
+volumes:
+  dbdata:
