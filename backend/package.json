@@ -8,7 +8,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "xo && ava",
+    "test": "xo && DATABASE_URL=${DATABASE_URL:-postgres://broil:broil@localhost/broil} ava",
+    "test:debug": "xo && DATABASE_URL=${DATABASE_URL:-postgres://broil:broil@localhost/broil} DEBUG=\"true\" ava",
+    "db:migrate": "./node_modules/.bin/sequelize db:migrate --url ${DATABASE_URL:-postgres://broil:broil@localhost/broil}",
+    "db:migrate:undo": "./node_modules/.bin/sequelize db:migrate:undo --url ${DATABASE_URL:-postgres://broil:broil@localhost/broil}",
     "start": "node index.js --color",
     "dev": "nodemon index.js --color"
   },
@@ -28,19 +31,35 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-unicorn": "^4.0.3",
+    "figures": "^2.0.0",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
     "nodemon": "^1.17.5",
     "pg": "^7.4.3",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.37.10"
+    "sequelize": "^4.37.10",
+    "sequelize-cli": "^4.0.0"
   },
   "devDependencies": {
     "ava": "^0.25.0",
+    "supertest": "^3.1.0",
+    "wait-for-localhost": "^2.0.1",
     "xo": "^0.21.1"
   },
   "eslintConfig": {
     "extends": "xo/esnext"
+  },
+  "ava": {
+    "require": [
+      "@babel/register",
+      "@babel/polyfill",
+      "./test/lib/start-server.js"
+    ],
+    "files": [
+      "test/**/*.js",
+      "!test/lib/**/*.js"
+    ],
+    "serial": true
   }
 }

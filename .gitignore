@@ -2,3 +2,4 @@
 **/package-lock.json # use yarn.lock
 **/yarn-error.log
 .vscode/
+frontend/.cache

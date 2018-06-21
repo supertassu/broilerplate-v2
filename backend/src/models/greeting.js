@@ -1,9 +1,9 @@
-import sequelize from './sequelize';
 import Sequelize from 'sequelize';
+import sequelize from './sequelize';
 
 const Greeting = sequelize.define('greeting', {
-	text: Sequelize.STRING,
-	language: Sequelize.STRING
+	text: {type: Sequelize.STRING, allowNull: false},
+	language: {type: Sequelize.STRING, defaultValue: 'en_US'}
 }, {
 	timestamps: true
 });
@@ -11,9 +11,9 @@ const Greeting = sequelize.define('greeting', {
 Greeting.prototype.toJSON = function () {
 	return {
 		id: this.id,
-		lang: this.language,
+		language: this.language,
 		text: this.text
 	};
 };
 
-module.exports = Greeting;
+export default Greeting;

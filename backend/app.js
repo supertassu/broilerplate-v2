@@ -4,7 +4,7 @@ import bodyParser from 'koa-bodyparser';
 
 import httpLogger from './src/utils/http-logger';
 
-import greetings from './src/controllers/greetings';
+import * as greetings from './src/controllers/greetings';
 
 const app = new Koa();
 const router = new Router();
@@ -17,11 +17,11 @@ router.get('/', ctx => {
 	ctx.status = 200;
 });
 
-router.get('/greeting', greetings.list);
-router.post('/greeting', greetings.create);
+router.get('/greetings', greetings.list);
+router.post('/greetings', greetings.create);
 
 router.get('/error', _ => {
-	throw Error('something failed, ur bad!');
+	throw new Error('something failed, ur bad!');
 });
 
 app

@@ -1,10 +1,11 @@
 import Greeting from '../models/greeting';
+import ClientError from '../utils/client-error';
 
 /**
 * @api {get} /greetings  Lists all greetings stored in the database
 * @param {object} ctx Koa context
 */
-exports.list = async ctx => {
+export const list = async ctx => {
 	const greetings = await Greeting.findAll();
 	const greetingsJSON = await Promise.all(greetings.map(greeting => greeting.toJSON()));
 
@@ -21,9 +22,15 @@ exports.list = async ctx => {
 * @api {post} /greetings  Create a greeting
 * @param {object} ctx Koa context
 */
-exports.create = async ctx => {
+export const create = async ctx => {
 	const params = ctx.request.body;
-	const greeting = await Greeting.create({text: params.text, language: params.language});
+
+	let greeting;
+	try {
+		greeting = await Greeting.create({text: params.text, language: params.language});
+	} catch (e) {
+		throw new ClientError(400, 'SAVING_ERROR');
+	}
 
 	ctx.body = await greeting.toJSON();
 	ctx.status = 201;

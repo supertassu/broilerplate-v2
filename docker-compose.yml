@@ -9,7 +9,6 @@ services:
     image: postgres:11-alpine
     volumes:
       - dbdata:/var/lib/postgresql/data
-
   backend:
     build: backend
     command: ./wait-for db:5432 -- yarn dev
@@ -25,15 +24,15 @@ services:
       - 5858:5858
     depends_on:
       - db
-
-  # dev:
-  #   build: frontend
-  #   environment:
-  #     ENDPOINT: ${ENDPOINT}
-  #   volumes:
-  #     - ./frontend/src:/usr/src/app/src
-  #   ports:
-  #     - 8000:8000
+  dev:
+    build: frontend
+    environment:
+      ENDPOINT: ${ENDPOINT}
+    volumes:
+      - ./frontend/src:/usr/src/app/src
+    ports:
+      - 8000:8000
+      - 37149:37149
 
 volumes:
   dbdata:

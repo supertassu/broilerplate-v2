@@ -54,6 +54,4 @@ logger.addLogger('complete', {
 	]
 });
 
-logger.log('note', 'Hello!');
-
 export default logger;
