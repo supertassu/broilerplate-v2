@@ -12,12 +12,12 @@ module.exports = {
 				}
 			},
 			{
-				test: /\.scss$/,
+				test: /\.less$/,
 				exclude: /node_modules/,
 				use: [
 					process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
 					"css-loader",
-					"sass-loader"
+					"less-loader"
 				]
 			}
 		]
