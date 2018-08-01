@@ -3,3 +3,5 @@
 **/yarn-error.log
 .vscode/
 frontend/.cache
+robot/*.html
+robot/*.xml
